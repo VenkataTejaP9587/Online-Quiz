@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quiz</title>
+  <link rel="stylesheet" href="quiz.css">
+</head>
+<body>
+  <h2 id="quizTitle"></h2>
+  <div id="quiz-container"></div>
+  <button onclick="submitQuiz()">Submit</button>
+
+  <script>
+    const subject = localStorage.getItem('subject');
+    const level = localStorage.getItem('level');
+    const username = localStorage.getItem('username');
+
+    document.getElementById('quizTitle').innerText = `${subject} - ${level}`;
+
+    const allQuestions = {
+      "Python": {
+        "Easy": [
+          { q: "What is Python?", options: ["Snake", "Programming Language", "Game", "Fruit"], answer: "Programming Language" },
+          { q: "Which keyword defines a function?", options: ["function", "def", "define", "fun"], answer: "def" }
+        ],
+        "Medium": [
+          { q: "What is a list in Python?", options: ["Mutable", "Immutable", "Fixed", "Unordered"], answer: "Mutable" },
+          { q: "What does len() return?", options: ["Size", "Length", "Name", "None"], answer: "Length" }
+        ],
+        "Hard": [
+          { q: "What is a lambda?", options: ["Variable", "Function", "Module", "Object"], answer: "Function" },
+          { q: "What is the output of type([])?", options: ["list", "dict", "set", "tuple"], answer: "list" }
+        ]
+      },
+      "AI": {
+        "Easy": [
+          { q: "AI stands for?", options: ["Artificial Intelligence", "Air India", "Auto Index", "Apple Inc"], answer: "Artificial Intelligence" },
+          { q: "Which is an AI field?", options: ["ML", "Cooking", "Cycling", "Driving"], answer: "ML" }
+        ],
+        "Medium": [
+          { q: "What is ML?", options: ["Machine Learning", "Mass Learning", "Mega Logic", "Map Learning"], answer: "Machine Learning" },
+          { q: "AI systems mimic?", options: ["Humans", "Cats", "Birds", "Cars"], answer: "Humans" }
+        ],
+        "Hard": [
+          { q: "Q-learning is for?", options: ["Reinforcement Learning", "Classification", "Sorting", "Prediction"], answer: "Reinforcement Learning" },
+          { q: "Backpropagation is used in?", options: ["Neural Nets", "Trees", "Graphs", "Arrays"], answer: "Neural Nets" }
+        ]
+      },
+      "Web": {
+        "Easy": [
+          { q: "HTML stands for?", options: ["HyperText Markup Language", "Hyper Tool Markup", "Home Tool Markup", "None"], answer: "HyperText Markup Language" },
+          { q: "CSS is for?", options: ["Styling", "Backend", "Logic", "None"], answer: "Styling" }
+        ],
+        "Medium": [
+          { q: "JavaScript is?", options: ["Client-side", "Server-side", "Database", "Compiler"], answer: "Client-side" },
+          { q: "Which is not HTML tag?", options: ["<p>", "<div>", "<h1>", "<bodyy>"], answer: "<bodyy>" }
+        ],
+        "Hard": [
+          { q: "React is a?", options: ["Framework", "Library", "Database", "Language"], answer: "Library" },
+          { q: "Which one is frontend?", options: ["HTML", "Node.js", "MongoDB", "Express"], answer: "HTML" }
+        ]
+      }
+    };
+
+    const questions = (allQuestions[subject] && allQuestions[subject][level]) || [];
+
+    // Shuffle Questions
+    const shuffled = questions.sort(() => Math.random() - 0.5);
+
+    const container = document.getElementById('quiz-container');
+    shuffled.forEach((q, index) => {
+      const div = document.createElement('div');
+      div.innerHTML = `<p><strong>Q${index + 1}:</strong> ${q.q}</p>` +
+        q.options.map(opt =>
+          `<label><input type="radio" name="q${index}" value="${opt}"/> ${opt}</label><br>`
+        ).join('');
+      container.appendChild(div);
+    });
+
+    function submitQuiz() {
+      let score = 0;
+      shuffled.forEach((q, index) => {
+        const selected = document.querySelector(`input[name="q${index}"]:checked`);
+        if (selected && selected.value === q.answer) {
+          score++;
+        }
+      });
+      localStorage.setItem(`result_${username}`, `${score}/${shuffled.length}`);
+      window.location.href = 'dashboard.html';
+    }
+  </script>
+</body>
+</html>

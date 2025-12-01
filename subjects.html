@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Select Subject</title>
+  <link rel="stylesheet" href="subjects.css">
+</head>
+<body>
+  <h2>Select Subject</h2>
+  <div class="subjects">
+    <button onclick="selectSubject('Python')">🐍 Python</button>
+    <button onclick="selectSubject('AI')">🧠 AI</button>
+    <button onclick="selectSubject('Web')">🌐 Web Development</button>
+  </div>
+  <script>
+    function selectSubject(sub) {
+      localStorage.setItem('subject', sub);
+      window.location.href = 'levels.html';
+    }
+  </script>
+</body>
+</html>
